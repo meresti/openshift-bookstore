@@ -15,10 +15,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir('pge') {
-                    // always refresh the maven dependencies (-U) and skip the tests
-                    sh "mvn -U clean package -Dmaven.test.skip=true"
-                }
+                // always refresh the maven dependencies (-U) and skip the tests
+                sh "mvn -U clean package -Dmaven.test.skip=true"
             }
         }
     }
