@@ -41,6 +41,9 @@ oc create -n cicd -f pipeline.yaml
 # deploy the application
 oc project bookstore-development
 
+#Create a MongoDB service
+oc new-app --template=mongodb-persistent -p MONGODB_USER=mongo-user -p MONGODB_PASSWORD=mongo-pwd -p MONGODB_DATABASE=bookstore -p MONGODB_ADMIN_PASSWORD=mongo-admin-pwd -p MONGODB_VERSION=3.4 -p MEMORY_LIMIT=512Mi -p VOLUME_CAPACITY=2Gi
+
 #Create a new "binary" build config
 oc new-build --name=bookstore-book-service redhat-openjdk18-openshift --binary=true
 
