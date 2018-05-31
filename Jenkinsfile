@@ -27,6 +27,7 @@ pipeline {
                         openshift.withProject( 'bookstore-development' ) {
                             echo "Hello from ${openshift.cluster()}'s default project: ${openshift.project()}"
                             timeout(2){
+                                sh "oc project bookstore-development"
                                 sh "oc start-build book-service --from-file=./book-service/target/book-service-0.0.1-SNAPSHOT.jar"
                             }
                         }
