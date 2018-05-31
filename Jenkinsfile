@@ -25,7 +25,7 @@ pipeline {
                 openshift.withCluster( 'https://192.168.99.100:8443' ) {
                     openshift.withProject( 'bookstore-development' ) {
                         timeout(2){
-                            oc start-build book-service --from-file=./book-service/target/book-service-0.0.1-SNAPSHOT.jar
+                            sh "oc start-build book-service --from-file=./book-service/target/book-service-0.0.1-SNAPSHOT.jar"
                         }
                     }
                 }
