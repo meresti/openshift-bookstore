@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh "chmode ./mvnw 755"
+                sh "chmod ./mvnw 755"
                 // always refresh the maven dependencies (-U) and skip the tests
                 sh "./mvnw -U clean package -Dmaven.test.skip=true"
             }
