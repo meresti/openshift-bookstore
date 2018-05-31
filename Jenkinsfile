@@ -22,10 +22,9 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh "mvn test verify"
+                sh "./mvnw test verify"
             }
         }
-
         stage('Deploy to Development') {
             steps {
                 script {
