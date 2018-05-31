@@ -31,6 +31,13 @@ pipeline {
                         }
                     }
                 }
+
+                openshiftVerifyDeployment(namespace: 'bookstore-development',
+                                          depCfg:'bookstore-book-service',
+                                          replicaCount:'1',
+                                          verifyReplicaCount:'true',
+                                          waitTime: '2',
+                                          waitUnit: 'min')
             }
         }
     }
