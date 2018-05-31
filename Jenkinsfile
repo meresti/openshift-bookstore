@@ -15,9 +15,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh "ls -l"
                 // always refresh the maven dependencies (-U) and skip the tests
-                sh "mvnw -U clean package -Dmaven.test.skip=true"
+                sh "./mvnw -U clean package -Dmaven.test.skip=true"
             }
         }
     }
