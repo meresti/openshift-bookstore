@@ -3,9 +3,9 @@ kind: BuildConfig
 metadata:
   creationTimestamp: null
   labels:
-    app: pipeline
-    name: pipeline
-  name: pipeline
+    app: book-store
+    name: BookStore
+  name: book-store
 spec:
   output: {}
   postCommit: {}

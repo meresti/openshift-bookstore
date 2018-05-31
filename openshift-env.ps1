@@ -47,8 +47,9 @@ oc new-build --name=bookstore-book-service redhat-openjdk18-openshift --binary=t
 #Start a new build using the binary build config just created
 #oc start-build bookstore-book-service --from-file=./book-service/target/book-service-0.0.1-SNAPSHOT.jar --follow=true
 
-#Create the application
+#Create the application and service
 oc new-app bookstore-book-service --allow-missing-imagestream-tags
+oc expose deploymentconfig bookstore-book-service --port 8080 --name=book-service
 
 #Create a root for the service
-#oc expose service book-service --name=book-service --hostname=book-service-development.192.168.99.100.xip.io
+oc expose service book-service --name=book-service --hostname=book-service-development.192.168.99.100.xip.io
