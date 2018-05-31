@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Deploy to Development') {
             steps {
-                openshiftExec command: [ 'oc start-build', 'book-service-2' '--from-file=./book-service/target/book-service-0.0.1-SNAPSHOT.jar'], namespace: 'bookstore', verbose: 'true', waitTime: '2', waitUnit: 'min'
+                openshiftExec(command: [ 'oc start-build', 'book-service-2' '--from-file=./book-service/target/book-service-0.0.1-SNAPSHOT.jar'], namespace: 'bookstore', verbose: 'true', waitTime: '2', waitUnit: 'min')
             }
         }
     }
