@@ -20,6 +20,12 @@ pipeline {
                 sh "./mvnw -U clean package -Dmaven.test.skip=true"
             }
         }
+        stage('Test') {
+            steps {
+                sh "mvn test verify"
+            }
+        }
+
         stage('Deploy to Development') {
             steps {
                 script {
