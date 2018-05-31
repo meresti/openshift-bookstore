@@ -20,5 +20,10 @@ pipeline {
                 sh "./mvnw -U clean package -Dmaven.test.skip=true"
             }
         }
+        stage('Deploy to Development') {
+            steps {
+                openshiftExec command: [ 'oc start-build', 'book-service-2' '--from-file=./book-service/target/book-service-0.0.1-SNAPSHOT.jar'], namespace: 'bookstore', verbose: 'true', waitTime: '2', waitUnit: 'min'
+            }
+        }
     }
 }
