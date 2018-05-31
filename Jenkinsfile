@@ -22,7 +22,13 @@ pipeline {
         }
         stage('Deploy to Development') {
             steps {
-                openshiftExec(command: [ 'oc start-build', 'book-service-2', '--from-file=./book-service/target/book-service-0.0.1-SNAPSHOT.jar'], namespace: 'bookstore', verbose: 'true', waitTime: '2', waitUnit: 'min')
+                openshift.withCluster( 'https://192.168.99.100:8443' ) {
+                    openshift.withProject( 'bookstore-development' ) {
+                        timeout(2){
+                            oc start-build book-service --from-file=./book-service/target/book-service-0.0.1-SNAPSHOT.jar
+                        }
+                    }
+                }
             }
         }
     }
