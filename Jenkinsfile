@@ -25,6 +25,7 @@ pipeline {
                 script {
                     openshift.withCluster( 'https://192.168.99.100:8443' ) {
                         openshift.withProject( 'bookstore-development' ) {
+                            sh "oc project bookstore-development"
                             timeout(2){
                                 sh "oc start-build bookstore-book-service --from-file=./book-service/target/book-service-0.0.1-SNAPSHOT.jar --follow=true"
                             }

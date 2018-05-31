@@ -33,9 +33,10 @@ oc policy add-role-to-user edit system:serviceaccount:cicd:jenkins -n bookstore-
 oc policy add-role-to-group system:image-puller system:serviceaccounts:bookstore-testing -n bookstore-development
 oc policy add-role-to-group system:image-puller system:serviceaccounts:bookstore-production -n bookstore-development
 
-# deploy a Jenkins
+# deploy a Jenkins and the pipeline
 oc project cicd
 oc new-app --template=jenkins-persistent -p JENKINS_IMAGE_STREAM_TAG=jenkins:2 -p NAMESPACE=openshift -p MEMORY_LIMIT=512Mi -p ENABLE_OAUTH=true
+oc create -n cicd -f pipeline.yaml
 
 # deploy the application
 oc project bookstore-development
