@@ -46,5 +46,32 @@ pipeline {
                                           waitUnit: 'min')
             }
         }
+        stage('Deploy to Testing') {
+            steps {
+                openshiftTag(namespace: 'bookstore-development',
+                             sourceStream: 'bookstore-book-service',
+                             sourceTag: 'latest',
+                             destinationStream: 'bookstore-book-service',
+                             destinationTag: 'promoteQA')
+
+                openshiftDeploy(namespace: 'bookstore-testing',
+                                deploymentConfig: 'book-service',
+                                waitTime: '2',
+                                waitUnit: 'min')
+
+                openshiftScale(namespace: 'bookstore-testing',
+                               deploymentConfig: 'book-service',
+                               waitTime: '2',
+                               waitUnit: 'min',
+                               replicaCount: '2')
+
+                openshiftVerifyDeployment(namespace: 'bookstore-testing',
+                                          deploymentConfig: 'book-service',
+                                          replicaCount:'2',
+                                          verifyReplicaCount: 'true',
+                                          waitTime: '2',
+                                          waitUnit: 'min')
+            }
+        }
     }
 }
