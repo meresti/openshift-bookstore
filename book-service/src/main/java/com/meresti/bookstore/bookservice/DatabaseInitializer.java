@@ -24,7 +24,13 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     @Override
     public void run(final String... args) throws Exception {
-        bookRepository.deleteAll().doOnSuccess(result -> bookRepository.saveAll(createSampleBooks()).subscribe(null, null, () -> log.info("Sample data saved to MongoDB.")));
+        log.info("Initializing database ...");
+        bookRepository.deleteAll().doOnSuccess(result -> {
+            log.info("Previous data deleted. Creating sample data ...");
+            bookRepository.saveAll(createSampleBooks()).subscribe(null, null, () -> {
+                log.info("Sample data saved to MongoDB.");
+            });
+        });
     }
 
     private List<Book> createSampleBooks() {
