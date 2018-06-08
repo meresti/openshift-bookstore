@@ -25,12 +25,17 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Override
     public void run(final String... args) throws Exception {
         log.info("Initializing database ...");
-        bookRepository.deleteAll().doOnSuccess(result -> {
-            log.info("Previous data deleted. Creating sample data ...");
-            bookRepository.saveAll(createSampleBooks()).subscribe(null, null, () -> {
-                log.info("Sample data saved to MongoDB.");
-            });
-        });
+        bookRepository.deleteAll()
+                .subscribe((v) -> log.info("Previous data deleted"),
+                        ex -> log.info("Unable to delete previous data", ex),
+                        () -> {
+                            log.info("Previous data deleted. Creating sample data ...");
+                            bookRepository.saveAll(createSampleBooks())
+                                    .subscribe(book -> log.info("Saved data {}", book),
+                                            ex -> log.info("Unable to save data", ex),
+                                            () -> log.info("Sample data saved to MongoDB."));
+                        },
+                        s -> log.info("Subscription consumer {}", s));
     }
 
     private List<Book> createSampleBooks() {
