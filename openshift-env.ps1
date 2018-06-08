@@ -73,6 +73,9 @@ oc rollout cancel dc/book-service
 oc expose dc book-service --port=8080
 oc expose service book-service --name=book-service --hostname=book-service-testing.192.168.99.100.xip.io
 
+#Create a MongoDB service
+oc new-app --template=mongodb-persistent -p MONGODB_USER=mongo-user -p MONGODB_PASSWORD=mongo-pwd -p MONGODB_DATABASE=bookstore -p MONGODB_ADMIN_PASSWORD=mongo-admin-pwd -p MONGODB_VERSION=3.4 -p MEMORY_LIMIT=512Mi -p VOLUME_CAPACITY=2Gi
+
 # Create the deployment config for the Testing project
 oc project bookstore-production
 oc create dc book-service --image=172.30.1.1:5000/bookstore-development/bookstore-book-service:promotePRD
@@ -85,3 +88,5 @@ oc rollout cancel dc/book-service
 oc expose dc book-service --port=8080
 oc expose service book-service --name=book-service --hostname=book-service-production.192.168.99.100.xip.io
 
+#Create a MongoDB service
+oc new-app --template=mongodb-persistent -p MONGODB_USER=mongo-user -p MONGODB_PASSWORD=mongo-pwd -p MONGODB_DATABASE=bookstore -p MONGODB_ADMIN_PASSWORD=mongo-admin-pwd -p MONGODB_VERSION=3.4 -p MEMORY_LIMIT=512Mi -p VOLUME_CAPACITY=2Gi
