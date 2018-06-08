@@ -38,6 +38,12 @@ pipeline {
                     }
                 }
 
+                openshiftScale(namespace: 'bookstore-development',
+                               depCfg: 'bookstore-book-service',
+                               waitTime: '2',
+                               waitUnit: 'min',
+                               replicaCount: '1')
+
                 openshiftVerifyDeployment(namespace: 'bookstore-development',
                                           depCfg:'bookstore-book-service',
                                           replicaCount:'1',
