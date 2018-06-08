@@ -1,0 +1,11 @@
+This demo project illustrates how to integrate OpenShift into the Jenkins pipeline; how to deploy the application to
+OpenShift and then promote the image from one namespace to another (dev->test->prod) using a Jenkins Pipeline.
+
+To create the OpenShift resources execute the PowerShell `openshift-env.ps1`
+```
+& ./openshift-env.ps1
+```
+In case script execution is disabled; it can be enabled for the current bash by executing the command
+```
+Set-ExecutionPolicy Bypass -Scope Process
+```
