@@ -76,8 +76,7 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 timeout(time: 2, unit: 'DAYS') {
-                    input
-                        message: 'Approve to production?'
+                    input 'Approve to production?'
                 }
                 openshiftTag(namespace: 'bookstore-development',
                              srcStream: 'bookstore-book-service',
