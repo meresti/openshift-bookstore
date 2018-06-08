@@ -56,3 +56,32 @@ oc expose deploymentconfig bookstore-book-service --port 8080 --name=book-servic
 
 #Create a root for the service
 oc expose service book-service --name=book-service --hostname=book-service-development.192.168.99.100.xip.io
+
+#https://github.com/appuio/advanced-openshift-pipeline-example/blob/master/ocp-template.yaml
+
+#oc set probe dc bookstore-book-service --readiness --open-tcp=8080 --initial-delay-seconds=5 --timeout-seconds=5 --get-url=http://:8080/actuator/health
+
+# Create the deployment config for the Testing project
+oc project bookstore-testing
+oc create dc book-service --image=172.30.1.1:5000/bookstore-development/bookstore-book-service:promoteQA
+oc rollout cancel dc/book-service
+# Change the imagePullPolicy to Allways (from the default IfNotPresent)
+#oc patch dc/book-service --patch '{"spec":{"template":{"spec":{"containers":[{"name":"default-container","imagePullPolicy":"Always"}]}}}}'
+oc --% patch dc/book-service --patch "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"default-container\",\"imagePullPolicy\":\"Always\"}]}}}}"
+oc rollout cancel dc/book-service
+
+oc expose dc book-service --port=8080
+oc expose service book-service --name=book-service --hostname=book-service-testing.192.168.99.100.xip.io
+
+# Create the deployment config for the Testing project
+oc project bookstore-production
+oc create dc book-service --image=172.30.1.1:5000/bookstore-development/bookstore-book-service:promotePRD
+oc rollout cancel dc/book-service
+# Change the imagePullPolicy to Allways (from the default IfNotPresent)
+#oc patch dc/book-service --patch '{"spec":{"template":{"spec":{"containers":[{"name":"default-container","imagePullPolicy":"Always"}]}}}}'
+oc --% patch dc/book-service --patch "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"default-container\",\"imagePullPolicy\":\"Always\"}]}}}}"
+oc rollout cancel dc/book-service
+
+oc expose dc book-service --port=8080
+oc expose service book-service --name=book-service --hostname=book-service-production.192.168.99.100.xip.io
+

@@ -73,5 +73,36 @@ pipeline {
                                           waitUnit: 'min')
             }
         }
+        stage('Deploy to Production') {
+            steps {
+                timeout(time: 2, unit: 'DAYS') {
+                    input
+                        message: 'Approve to production?'
+                }
+                openshiftTag(namespace: 'bookstore-development',
+                             srcStream: 'bookstore-book-service',
+                             srcTag: 'promoteQA',
+                             destStream: 'bookstore-book-service',
+                             destTag: 'promotePRD')
+
+                openshiftDeploy(namespace: 'bookstore-production',
+                                depCfg: 'book-service',
+                                waitTime: '2',
+                                waitUnit: 'min')
+
+                openshiftScale(namespace: 'bookstore-production',
+                               depCfg: 'book-service',
+                               waitTime: '2',
+                               waitUnit: 'min',
+                               replicaCount: '2')
+
+                openshiftVerifyDeployment(namespace: 'bookstore-production',
+                                          depCfg: 'book-service',
+                                          replicaCount:'2',
+                                          verifyReplicaCount: 'true',
+                                          waitTime: '2',
+                                          waitUnit: 'min')
+            }
+        }
     }
 }
